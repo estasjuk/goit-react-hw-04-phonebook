@@ -1,22 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { nanoid } from 'nanoid';
 
 import MyContactsForm from './MyContactsForm/MyContactsForm';
 import MyContactList from './MyContactsList/MyContactsList';
 import MyContactsFind from './MyContactsFind/MyContactsFind';
+import useLocalStorage from 'hooks/useLocalStorage';
 
 import css from './MyContacts.module.css';
 
 const MyContacts = () => {
-  const [contacts, setContacts] = useState(() => {
-    const contacts = JSON.parse(localStorage.getItem('my-contacts'));
-    return contacts ? contacts : [];
-  });
+  const [contacts, setContacts] = useLocalStorage('my-contacts', []);
   const [filter, setFilter] = useState('');
-
-  useEffect(() => {
-    localStorage.setItem('my-contacts', JSON.stringify(contacts));
-  }, [contacts]);
 
   const addContact = ({ name, number }) => {
     if (isDublicate(name)) {
